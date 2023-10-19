@@ -4,7 +4,7 @@ namespace Core;
 
 class ApplicationHelper
 {
-    private string $config = __DIR__."options.ini";
+    private string $config = __DIR__."/../options.ini";
     private Registry $reg;
 
     public function __construct()
@@ -21,7 +21,7 @@ class ApplicationHelper
 
     private function setupOptions(): void
     {
-        if (! file_exists(($this->config)))
+        if (!file_exists(($this->config)))
         {
             throw new \Exception("File does not exist!");
         }
