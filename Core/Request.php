@@ -1,18 +1,11 @@
 <?php
 
+namespace Core;
 
 abstract class Request
 {
     protected array $properties = [];
-    protected array $feedback = [];
     protected string $path = "/";
-
-    public function __construct ()
-    {
-        $this->init();
-    }
-
-    abstract public function init (): void;
 
     public function setPath (string $path): void
     {
@@ -39,23 +32,4 @@ abstract class Request
         $this->properties[$key] = $val;
     }
 
-    public function addFeedback(string $msg): void
-    {
-        array_push($this->feedback, $msg);
-    }
-
-    public function getFeedback(): array
-    {
-        return $this->feedback;
-    }
-
-    public function getFeedbackString($separator = "\n"): string
-    {
-        return implode($separator, $this->feedback);
-    }
-
-    public function ckearFeedback(): void
-    {
-        $this->feedback = [];
-    }
 }

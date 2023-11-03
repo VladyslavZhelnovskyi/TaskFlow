@@ -11,10 +11,10 @@ abstract class Command
 
     }
 
-    public function execute (Request $request): void
+    public function execute (Response $response): void
     {
-        $this->doExecute($request);
+        $this->doExecute($response);
     }
 
-    abstract protected function doExecute (Request $request): void;
+    abstract protected function doExecute (Response $response): void;
 }

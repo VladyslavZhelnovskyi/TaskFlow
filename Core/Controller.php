@@ -15,20 +15,16 @@ class Controller
     public static function run(): void
     {
         $instance = new self();
-        $instance->init();
         $instance->handleRequest();
-    }
-
-    private function init(): void
-    {
-        $this->reg->getApplicationHelper()->init();
     }
 
     private function handleRequest(): void
     {
+        $router = $this->reg->getRouter();
         $request = $this->reg->getRequest();
-        $resolver = new CommandResolver();
-        $cmd = $resolver->getCommand($request);
-        $cmd->execute($request);
+        $response = $this->reg->getResponse();
+
+        $cmd = $router->getCommand($request, $response);
+        $cmd->execute($response);
     }
 }
