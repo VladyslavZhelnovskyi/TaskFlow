@@ -2,55 +2,43 @@
 
 namespace Core;
 
-use \Controllers\DefaultCommand;
-
 class Router
 {
-    private Registry $reg;
     private static ? \ReflectionClass $refcmd = null;
-    private static string $defaultcmd = DefaultCommand::class;
 
     public function __construct()
     {
         self::$refcmd = new \ReflectionClass(Command::class);
-        $this->reg = Registry::instance();
-        $this->init();
-    }
-
-    private function init(): void
-    {
-        $request = new HttpRequest();
-        $request->setPath($_SERVER['REQUEST_URI']);
-        $this->reg->setRequest($request);
-        $this->reg->setResponse(new HttpResponse());
-    }
-
-    private function commandGet($path): string
-    {
-        return "";
     }
 
     public function getCommand (Request $request, Response $response): Command
-    {
-        $path = ucwords($request->getPath(), "/");
-        $file = __DIR__.$path;
-        $file = str_replace('Core', 'Controllers', $file).".php";
-        $class = "\Controllers".str_replace("/", "\\", $path);
-        
+    {        
+        $class = "\Controllers".str_replace("/", "\\", $request->getPath());
+        $file = $request->getFile();
 
-       if (!file_exists($file))
+        if ($request->getPath() == "/")
         {
-            $response->addFeedback("Class '$path' not found");
-            return new self::$defaultcmd();
+            $response->setStatusCode(200);
+            return new \Controllers\Home();
         }
-
+       
+        if (!file_exists($file))
+        {
+            $response->setStatusCode(404);
+            $response->addFeedback("File '$file' not found");
+            return new \Controllers\NotFound();
+        }
+        
         $refclass = new \ReflectionClass($class); 
 
         if (!$refclass->isSubclassOf(self::$refcmd))
         {
+            $response->setStatusCode(404);
             $response->addFeedback("Command '$refclass' is not a Command");
-            return new self::$defaultcmd();
+            return new \Controllers\NotFound();
         }
+
+        $response->setStatusCode(200);
         return $refclass->newInstance();
     }
 

@@ -2,10 +2,19 @@
 
 namespace Core;
 
-abstract class Request
+class Request
 {
-    protected array $properties = [];
     protected string $path = "/";
+    protected array $properties = [];
+    private ? string $httpMethod = null;
+    protected string $file = ""; 
+
+    public function __construct()
+    {
+        $this->path = ucwords($_SERVER['REQUEST_URI'], "/");
+        $this->file = str_replace('Core', 'Controllers', __DIR__.$this->path).".php";
+        $this->setHttpMethod($_SERVER['REQUEST_METHOD']);
+    }
 
     public function setPath (string $path): void
     {
@@ -15,6 +24,11 @@ abstract class Request
     public function getPath (): string
     {
         return $this->path;
+    }
+
+    public function getFile(): string 
+    {
+        return $this->file;
     }
 
     public function getProperty (string $key): mixed
@@ -30,6 +44,16 @@ abstract class Request
     public function setProperty(string $key, mixed $val): void
     {
         $this->properties[$key] = $val;
+    }
+
+    public function setHttpMethod(string $method): void
+    {
+        $this->httpMethod = $method;
+    }
+
+    public function getHtttpMethod(): string
+    {
+        return $this->httpMethod;
     }
 
 }

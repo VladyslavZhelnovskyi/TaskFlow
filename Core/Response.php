@@ -2,8 +2,9 @@
 
 namespace Core;
 
-abstract class Response
+class Response
 {
+    protected int $statusCode;
     protected array $feedback = [];
 
     public function addFeedback(string $msg): void
@@ -24,5 +25,16 @@ abstract class Response
     public function clearFeedback(): void
     {
         $this->feedback = [];
+    }
+
+    public function setStatusCode(int $code): void 
+    {
+        http_response_code($code);
+        $this->statusCode = http_response_code();
+    }
+
+    public function getStatusCode(): int
+    {
+        return $this->statusCode;
     }
 }

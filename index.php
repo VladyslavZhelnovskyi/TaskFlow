@@ -4,4 +4,4 @@
     ini_set("display_errors", 1);
     error_reporting(E_ALL);
 
-    Core\Controller::run();
+    Core\FrontController::run();

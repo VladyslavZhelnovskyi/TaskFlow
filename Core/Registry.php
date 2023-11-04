@@ -8,7 +8,6 @@ class Registry
     private ? Request $request = null;
     private ? Response $response = null;
     private ? Router $router = null;
-    private ? Command $commands = null;
 
     private function __construct()
     {
@@ -23,30 +22,20 @@ class Registry
         return self::$instance;
     }
 
-    public function setRequest(Request $request): void
-    {
-        $this->request = $request;
-    }
-
     public function getRequest(): Request
     {
         if (is_null($this->request))
         {
-            throw new \Exception("Request doesn't set");
+            $this->request = new Request();
         }
         return $this->request;
     }
 
-    public function setResponse(Response $response): void
-    {
-        $this->response = $response;
-    }
-
     public function getResponse(): Response
     {
-        if (is_null($this->request))
+        if (is_null($this->response))
         {
-            throw new \Exception("Response doesn't set");
+            $this->response = new Response();
         }
         return $this->response;
     }

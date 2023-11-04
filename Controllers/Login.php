@@ -8,6 +8,6 @@ class Login extends Command
 {
     protected function doExecute(Response $response): void
     {
-        require_once(__DIR__."/../Views/Login.php");
+        require_once("Views/Login.php");
     }
 }

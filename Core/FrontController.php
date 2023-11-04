@@ -3,7 +3,7 @@
 namespace Core;
 
 
-class Controller
+class FrontController
 {
     private Registry $reg;
 
@@ -24,7 +24,14 @@ class Controller
         $request = $this->reg->getRequest();
         $response = $this->reg->getResponse();
 
-        $cmd = $router->getCommand($request, $response);
+        if ($request->getHtttpMethod() == 'GET')
+        {
+            $cmd = $router->getCommand($request, $response);
+        }
+
+
         $cmd->execute($response);
     }
+
+
 }

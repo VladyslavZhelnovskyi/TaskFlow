@@ -5,10 +5,10 @@ use Core\Command;
 use Core\Response;
 
 
-class DefaultCommand extends Command
+class Home extends Command
 {
     protected function doExecute(Response $response): void
     {
-        require_once(__DIR__."/../Views/Home.php");
+        include("Views/Home.php");
     }
 }
